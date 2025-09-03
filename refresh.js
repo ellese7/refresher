@@ -17,10 +17,14 @@ async function fetchSessionCSRFToken(roblosecurityCookie) {
         const csrfToken = logoutResponse.headers['x-csrf-token'];
         console.log("CSRF Token:", csrfToken);
 
-        return csrfToken || null;
+        // Verifica che il token CSRF sia presente
+        if (!csrfToken) {
+            throw new Error("CSRF Token non trovato nei headers");
+        }
+
+        return csrfToken;
     } catch (error) {
-        // Se il logout fallisce, restituire null
-        console.error("Errore nel recupero CSRF Token:", error);
+        console.error("Errore nel recupero CSRF Token:", error.message || error);
         return null;
     }
 }
@@ -49,9 +53,13 @@ async function generateAuthTicket(roblosecurityCookie) {
         const authTicket = response.headers['rbx-authentication-ticket'];
         console.log("Auth Ticket:", authTicket);
         
-        return authTicket || "Failed to fetch auth ticket";
+        if (!authTicket) {
+            throw new Error('Failed to fetch auth ticket: No ticket returned');
+        }
+
+        return authTicket;
     } catch (error) {
-        console.error("Errore nel recupero dell'auth ticket:", error);
+        console.error("Errore nel recupero dell'auth ticket:", error.message || error);
         return "Failed to fetch auth ticket";
     }
 }
@@ -91,7 +99,7 @@ async function redeemAuthTicket(authTicket) {
             };
         }
     } catch (error) {
-        console.error("Errore nel rinnovo del cookie:", error);
+        console.error("Errore nel rinnovo del cookie:", error.message || error);
         return {
             success: false,
             robloxDebugResponse: error.response?.data || 'Errore sconosciuto'
