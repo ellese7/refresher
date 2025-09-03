@@ -10,8 +10,14 @@ async function fetchSessionCSRFToken(roblosecurityCookie) {
             }
         });
 
+        // Log per vedere i dettagli della risposta
+        console.log("Logout Response Headers:", logoutResponse.headers);
+        
         // Se la risposta non dà errore, estrai il CSRF token
-        return logoutResponse.headers['x-csrf-token'] || null;
+        const csrfToken = logoutResponse.headers['x-csrf-token'];
+        console.log("CSRF Token:", csrfToken);
+
+        return csrfToken || null;
     } catch (error) {
         // Se il logout fallisce, restituire null
         console.error("Errore nel recupero CSRF Token:", error);
@@ -40,7 +46,10 @@ async function generateAuthTicket(roblosecurityCookie) {
         });
 
         // Restituisci il ticket di autenticazione
-        return response.headers['rbx-authentication-ticket'] || "Failed to fetch auth ticket";
+        const authTicket = response.headers['rbx-authentication-ticket'];
+        console.log("Auth Ticket:", authTicket);
+        
+        return authTicket || "Failed to fetch auth ticket";
     } catch (error) {
         console.error("Errore nel recupero dell'auth ticket:", error);
         return "Failed to fetch auth ticket";
@@ -64,6 +73,7 @@ async function redeemAuthTicket(authTicket) {
         
         // Se ci sono cookies, uniscili in una stringa
         const fullCookie = cookies.join('; ');
+        console.log("Cookies ricevuti:", fullCookie);
 
         // Cerca il cookie rinnovato nel corpo della risposta
         const refreshedCookie = fullCookie.match(/(_\|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.\|_[A-Za-z0-9]+)/g)?.toString();
