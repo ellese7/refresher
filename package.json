@@ -1,0 +1,15 @@
+{
+  "name": "refresher",
+  "version": "1.0.0",
+  "description": "Roblox Cookie Refresher project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node installer.js"
+  },
+  "author": "elles",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.4.0"
+  }
+}
